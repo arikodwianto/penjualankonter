@@ -1,0 +1,41 @@
+<!-- templates/laporan/template_pulsa.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pulsa Report</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Pulsa Report</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Saldo</th>
+                <th>Tanggal Input</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pulsa in pulsa_list %}
+            <tr>
+                <td>{{ pulsa.saldo|floatformat:3 }}</td>
+                <td>{{ pulsa.tanggal_input }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

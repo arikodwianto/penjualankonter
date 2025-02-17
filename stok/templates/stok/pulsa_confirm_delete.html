@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Delete Pulsa</title>
+</head>
+<body>
+    <h1>Apakah Anda yakin ingin menghapus pulsa ini?</h1>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit">Ya, hapus</button>
+    </form>
+    <a href="{% url 'stok:pulsa_list' %}">Batal</a>
+</body>
+</html>

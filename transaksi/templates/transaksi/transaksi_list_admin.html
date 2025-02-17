@@ -1,0 +1,332 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'img/logo/logo_saricell.png' %}" rel="icon">
+    <title>Sari Cell - Transaksi Produk</title>
+    <link href="{% static 'vendor2/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor2/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/ruang-admin.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor2/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <style>
+         .form-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .hidden {
+            display: none;
+        }
+        .form-label {
+            font-weight: bold;
+        }
+        .form-control, .form-select {
+            border-radius: 0.25rem;
+            box-shadow: none;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .modal-content {
+            border-radius: 0.5rem;
+        }
+        .modal-header {
+            border-bottom: none;
+        }
+        .modal-title {
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #4e73df;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #2e59d9;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    
+    <div id="wrapper">
+           <!--Start Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'owner_dashboard' %}">
+          <div class="sidebar-brand-icon">
+            <img src="{% static 'img/logo/logo3.png' %}">
+          </div>
+          <div class="sidebar-brand-text mx-3">Sari Cell</div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'home' %}">
+            <i class="fas fa-fw fa-home icon-home" style="color: gray;"></i>
+  
+            <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Stok & Daftar Produk
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+            aria-expanded="true" aria-controls="collapseBootstrap">
+            <i class="fas fa-fw fa-database" style="color: gray;"></i>
+  
+  
+            <span>Data Master</span>
+          </a>
+          <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              
+              <a class="collapse-item" href="{% url 'stok_list_admin' %}">Produk atau Barang</a>
+              <a class="collapse-item" href="{% url 'pulsa_list_admin' %}">Pulsa</a>
+            </div>
+          </div>
+        </li>
+          <!-- Transaksi -->
+          <hr class="sidebar-divider">
+          <div class="sidebar-heading">
+           Transaksi
+          </div>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+              aria-controls="collapsePage">
+              <i class="fas fa-fw fa-exchange-alt"></i>
+              <span>Transaksi</span>
+            </a>
+            <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Transaksi</h6>
+                      <a class="collapse-item" href="{% url 'transaksi_list_admin' %}">Transaksi Produk</a>
+                      <a class="collapse-item" href="{% url 'transaksi_pulsa_list_admin' %}">Transaksi Pulsa</a>
+              </div>
+            </div>
+          </li>
+              <!-- Transaksi -->
+            <hr class="sidebar-divider">
+        <div class="version" id="version-ruangadmin"></div>
+      </ul>
+      <!-- End Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}" style="max-width: 60px">
+                                <span class="ml-2 d-none d-lg-inline text-white small">{{ user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Form -->
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Topbar -->
+                <!-- Topbar -->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Transaksi Produk</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'owner_dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item">Transaksi</li>
+                            <li class="breadcrumb-item active" aria-current="page">Transaksi produk</li>
+                        </ul>
+                    </div>
+                    
+    <div class="container">
+        <div class="row mt-4">
+            <div class="col-lg-6">
+                <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Transaksi</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_transaksi }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                        <div class="row no-gutters align-items-center">
+                            <div class="col mr-2">
+                                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">Total Keuntungan</div>
+                                <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_keuntungan }}</div>
+                            </div>
+                            <div class="col-auto">
+                                <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Button to trigger modal -->
+        <div class="row mt-4">
+            <div class="col-lg-12 text-right">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#transaksiModal">
+                    Tambah Transaksi
+                </button>
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal fade" id="transaksiModal" tabindex="-1" role="dialog" aria-labelledby="transaksiModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="transaksiModalLabel">Tambah Transaksi Produk</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="{% url 'transaksi_list' %}">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <label for="id_jenisprovider" class="form-label">Silahkan Pilih Jenis Provider</label>
+                                {{ form.jenisprovider }}
+                            </div>
+                            <div class="form-group hidden" id="produkField">
+                                <label for="id_produk" class="form-label">Silahkan Pilih Produk</label>
+                                {{ form.produk }}
+                            </div>
+                            <div class="form-group hidden" id="jumlahField">
+                                <label for="id_jumlah" class="form-label">Masukkan Jumlah</label>
+                                {{ form.jumlah }}
+                            </div>
+                            <div class="form-group text-right">
+                                <button type="submit" class="btn btn-primary">Tambah Transaksi</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="card mb-4 mt-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Riwayat Transaksi Produk</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>ID</th>
+                                <th>Produk</th>
+                                <th>Jenis</th>
+                                <th>Provider</th>
+                                <th>Jumlah</th>
+                                <th>Harga Modal</th>
+                                <th>Harga Jual</th>
+                                <th>Margin</th>
+                                <th>Tanggal</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for transaksi in transaksi_list %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>{{ transaksi.id }}</td>
+                                    <td>{{ transaksi.produk.nama_produk }}</td>
+                                    <td>{{ transaksi.produk.jenis_provider.jenis.nama_jenis }}</td>
+                                    <td>{{ transaksi.produk.jenis_provider.provider.nama_provider }}</td>
+                                    <td>{{ transaksi.jumlah }}</td>
+                                    <td>Rp {{ transaksi.produk.harga_modal|floatformat:"3" }}</td>
+                                    <td>Rp {{ transaksi.produk.harga_jual|floatformat:"3" }}</td>
+                                    <td>{{ transaksi.hitung_margin }}</td>
+                                    <td>{{ transaksi.tanggal }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        <!-- Footer -->
+        <footer class="sticky-footer bg-white">
+            <div class="container my-auto">
+              <div class="copyright text-center my-auto">
+                <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - 
+                  <b><a href="https://indrijunanda.gitlab.io/" target="_blank">Sari Cell</a></b>
+                </span>
+              </div>
+            </div>
+          </footer>
+          <!-- Footer -->
+</div>
+</div>
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
+
+
+    <script src="{% static 'vendor2/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor2/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/ruang-admin.min.js' %}"></script>
+    <script src="{% static 'vendor2/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor2/datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('#dataTable').DataTable(); // Initialize the DataTable
+
+            // Show/hide fields based on jenisprovider selection
+            $('#id_jenisprovider').change(function() {
+                if ($(this).val()) {
+                    $('#produkField, #jumlahField').removeClass('hidden');
+                } else {
+                    $('#produkField, #jumlahField').addClass('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

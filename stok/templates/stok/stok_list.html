@@ -1,0 +1,693 @@
+{% load static %}
+{% load humanize %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'img/logo/logo_saricell.png' %}" rel="icon">
+    <title>RuangAdmin - Produk _ Stok</title>
+    <link href="{% static 'vendor2/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor2/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/ruang-admin.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor2/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    <style>
+       /* Gaya untuk kesalahan form */
+.form-error {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.25rem;
+}
+
+/* Gaya untuk tombol primer */
+.btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.btn-primary:hover {
+    background-color: #0069d9;
+    border-color: #0062cc;
+}
+
+/* Gaya untuk kontainer form */
+.form-container {
+    position: absolute;
+    top: 70px;
+    right: 20px;
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.5s ease-out, top 0.5s ease-out;
+    background-color: white;
+    border: 1px solid #ddd;
+    padding: 10px;
+    z-index: 1000;
+}
+
+.form-container.show {
+    max-height: 200px;
+    top: 100px;
+}
+
+/* Gaya untuk alert */
+.alert {
+    margin: 20px 0; /* Margin yang lebih kecil untuk jarak yang lebih konsisten */
+}
+
+/* Gaya untuk baris tabel dengan peringatan */
+.table-warning {
+    background-color: #ffff99 !important;
+}
+
+/* Gaya untuk toast */
+.toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1050;
+    max-width: 350px;
+}
+
+.toast {
+    min-width: 300px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.toast-header {
+    background-color: #f8f9fa;
+    border-bottom: 1px solid #dee2e6;
+}
+
+.toast-body {
+    background-color: #fff;
+    padding: 15px;
+    color: #333;
+}
+
+.toast-body p {
+    margin: 0;
+    font-size: 14px;
+}
+
+/* Gaya untuk tombol close pada toast */
+.btn-close {
+    background-color: #dee2e6;
+}
+
+/* Gaya untuk tombol-tombol dalam container */
+.container-fluid.mb-3 {
+    display: flex;
+    justify-content: flex-start; /* Menyelaraskan tombol ke kiri */
+    gap: 10px; /* Jarak antar tombol, sesuaikan sesuai kebutuhan */
+}
+
+.container-fluid .btn {
+    margin: 0; /* Menghilangkan margin untuk tombol-tombol */
+    flex-shrink: 0; /* Menghindari tombol-tombol mengecil */
+}
+
+/* Mengatur kolom untuk tombol-tombol */
+.container-fluid .row {
+    display: flex;
+    flex-wrap: nowrap; /* Menghindari wrapping */
+    align-items: center; /* Menyelaraskan tombol-tombol di tengah vertikal */
+}
+
+.btn-group {
+    display: flex;
+    gap: 1px;
+}
+
+.btn-group .btn {
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.btn-group .btn:not(:last-child) {
+    margin-right: 1px;
+}
+
+.form-container {
+    margin-top: 0.5rem;
+}
+
+.form-container form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+       <!--Start Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'owner_dashboard' %}">
+          <div class="sidebar-brand-icon">
+            <img src="{% static 'img/logo/logo3.png' %}">
+          </div>
+          <div class="sidebar-brand-text mx-3">Sari Cell</div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'owner_dashboard' %}">
+            <i class="fas fa-fw fa-home icon-home" style="color: gray;"></i>
+  
+            <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Stok & Daftar Produk
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+            aria-expanded="true" aria-controls="collapseBootstrap">
+            <i class="fas fa-fw fa-database" style="color: gray;"></i>
+  
+  
+            <span>Data Master</span>
+          </a>
+          <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Data Master</h6>
+              <a class="collapse-item" href="{% url 'jenis_list' %}">Jenis</a>
+              <a class="collapse-item" href="{% url 'provider_list' %}">Provider atau Merek</a>
+              <a class="collapse-item" href="{% url 'jenisprovider_list' %}">Jenis Provider atau Merek</a>
+              <a class="collapse-item" href="/stok">Produk atau Barang</a>
+              <a class="collapse-item" href="{% url 'pulsa_list' %}">Pulsa</a>
+            </div>
+          </div>
+        </li>
+          <!-- Transaksi -->
+          <hr class="sidebar-divider">
+          <div class="sidebar-heading">
+           Transaksi
+          </div>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+              aria-controls="collapsePage">
+              <i class="fas fa-fw fa-exchange-alt"></i>
+              <span>Transaksi</span>
+            </a>
+            <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Transaksi</h6>
+                      <a class="collapse-item" href="{% url 'transaksi_list' %}">Transaksi Produk</a>
+                      <a class="collapse-item" href="{% url 'transaksi_pulsa_list' %}">Transaksi Pulsa</a>
+              </div>
+            </div>
+          </li>
+              <!-- Transaksi -->
+        <!-- Laporan -->
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Laporan 
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+            aria-controls="collapseForm">
+            <i class="fas fa-fw fa-chart-line"></i>
+            <span>Laporan Stok</span>
+          </a>
+          <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Stok</h6>
+              <a class="collapse-item" href="{% url 'produk_report' %}">Laporan Produk</a>
+              <a class="collapse-item" href="{% url 'pulsa_report' %}">Laporan Pulsa</a>
+            </div>
+          </div>
+        </li>
+          
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
+            aria-controls="collapseTable">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Laporan Transaksi</span>
+          </a>
+          <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Transaksi</h6>
+              <a class="collapse-item" href="{% url 'transaksi_report' %}">Laporan Transaksi Produk</a>
+              <a class="collapse-item" href="{% url 'transaksi_pulsa_report' %}">Laporan Transaksi Pulsa</a>
+            </div>
+          </div>
+        </li>
+        <!-- Laporan -->  
+  
+        <hr class="sidebar-divider">
+        <div class="version" id="version-ruangadmin"></div>
+      </ul>
+      <!-- End Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}"
+                                    style="max-width: 60px">
+                                <span class="ml-2 d-none d-lg-inline text-white small">{{ user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Form -->
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- TopBar -->
+
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Daftar Produk</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'owner_dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item">Data Master</li>
+                            <li class="breadcrumb-item active" aria-current="page">Produk</li>
+                        </ol>
+                    </div>
+                    
+
+                    <!-- Menampilkan Total Produk dan Total Modal -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="card shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Jenis Produk</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">{{ total_produk }}</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-boxes fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Total Modal</div>
+                                        <div class="h5 mb-0 font-weight-bold text-gray-800">Rp {{ total_modal }}</div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="container-fluid mb-3">
+                    <div class="row">
+                        <!-- Tombol Tampilkan Stok Menipis -->
+                        <div class="col-auto">
+                            <button id="showLowStock" class="btn btn-warning">
+                                <i class="fas fa-exclamation-triangle"></i> Tampilkan Stok Menipis
+                            </button>
+                        </div>
+                
+                        <!-- Tombol Urutkan Stok Menipis -->
+                        <div class="col-auto">
+                            <button id="sortLowStock" class="btn btn-info">
+                                <i class="fas fa-sort"></i> Urutkan Stok Menipis
+                            </button>
+                        </div>
+                
+                        <!-- Tombol Refresh -->
+                        <div class="col-auto">
+                            <button id="refreshTable" class="btn btn-secondary">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                
+                        <!-- Tombol Tambah Produk -->
+                        <div class="col-auto ml-auto">
+                            <a href="{% url 'produk_tambah' %}" class="btn btn-success ">
+                                <i class="fas fa-plus"></i> Tambah Produk
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                                               
+
+                    
+
+    <!-- Your existing content -->
+    <div class="card">
+        
+        <div class="card-body">
+            <div class="table-responsive p-3">
+                <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Nomor</th>
+                            <th>ID</th>
+                            <th>Nama Produk</th>
+                            <th>Jenis</th>
+                            <th>Provider</th>
+                            <th>Harga Beli</th>
+                            <th>Harga Jual</th>
+                            <th>Stok</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for produk in produks %}
+                        <tr>
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ produk.id }}</td>
+                            <td>{{ produk.nama_produk }}</td>
+                            <td>{{ produk.jenis_provider.jenis.nama_jenis }}</td>
+                            <td>{{ produk.jenis_provider.provider.nama_provider }}</td>
+                            <td>Rp {{ produk.harga_modal|intcomma }} </td>
+                            <td>Rp {{ produk.harga_jual|intcomma }}</td>
+                            <td>{{ produk.jumlah_stok }}</td>
+                            <td>
+                                <div class="btn-group" role="group">
+                                    <a href="{% url 'produk_edit' produk.id %}" class="btn btn-success btn-sm" title="Edit">
+                                        <i class="fas fa-edit"></i>
+                                    </a>
+                                    <button class="btn btn-danger btn-sm btn-delete-produk" 
+                                            data-id="{{ produk.id }}" 
+                                            data-name="{{ produk.nama_produk }}" 
+                                            title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                    <button class="btn btn-primary btn-sm btn-show-form" 
+                                            data-id="{{ produk.id }}" 
+                                            title="Add Stock">
+                                        <i class="fas fa-plus"></i>
+                                    </button>
+                                </div>
+                                <div class="form-container mt-2" id="form-container-{{ produk.id }}" style="display: none;">
+                                    <form action="{% url 'tambah_stok' %}" method="post">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="produk" value="{{ produk.id }}">
+                                        <input type="number" name="jumlah" min="1" placeholder="Jumlah" required>
+                                        <button type="submit" class="btn btn-success btn-sm"><i class="fas fa-check"></i> Submit</button>
+                                        <button type="button" class="btn btn-secondary btn-sm btn-cancel-form" data-id="{{ produk.id }}"><i class="fas fa-times"></i> Cancel</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="9">Belum ada produk yang ditambahkan.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+ <!-- Toast Notification -->
+ <div class="toast-container">
+    <div id="lowStockToast" class="toast" data-autohide="false">
+        <div class="toast-header">
+            <strong class="mr-auto">Stok Menipis</strong>
+            <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="toast-body">
+            <ul id="lowStockList">
+                <!-- Low stock items will be inserted here -->
+            </ul>
+           
+        </div>
+    </div>
+</div>
+
+
+    <!-- Modal Konfirmasi Hapus -->
+    <div class="modal fade" id="deleteProdukModal" tabindex="-1" role="dialog" aria-labelledby="deleteProdukModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteProdukModalLabel">Konfirmasi Hapus Produk</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Confirmation message will be set by JavaScript -->
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-danger" id="confirmDeleteProduk">Hapus</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+   <!-- Footer -->
+   <footer class="sticky-footer bg-white">
+    <div class="container my-auto">
+      <div class="copyright text-center my-auto">
+        <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - 
+          <b><a href="https://indrijunanda.gitlab.io/" target="_blank">iSari Cell</a></b>
+        </span>
+      </div>
+    </div>
+  </footer>
+  <!-- Footer -->
+</div>
+</div>
+
+<!-- Scroll to top -->
+<a class="scroll-to-top rounded" href="#page-top">
+<i class="fas fa-angle-up"></i>
+</a>
+
+    
+    <script src="{% static 'js/low_stock_alert.js' %}" defer></script>
+    
+    <script src="{% static 'vendor2/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor2/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/ruang-admin.min.js' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor2/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor2/datatables/dataTables.bootstrap4.min.js' %}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    const refreshButton = document.getElementById('refreshTable');
+    
+    if (refreshButton) {
+        refreshButton.addEventListener('click', function () {
+            location.reload();  // Refresh halaman
+        });
+    }
+});
+
+</script>
+    
+         <script>
+            document.addEventListener('DOMContentLoaded', function () {
+    const showLowStockButton = document.getElementById('showLowStock');
+    const sortLowStockButton = document.getElementById('sortLowStock');
+    const dataTable = document.getElementById('dataTableHover');
+    
+    // Fungsi untuk menampilkan stok menipis
+    function showLowStock() {
+        const rows = dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr');
+        let lowStockProducts = [];
+        
+        for (let row of rows) {
+            const stockCell = row.getElementsByTagName('td')[7];
+            if (stockCell) {
+                const stockValue = parseInt(stockCell.innerText.trim());
+                if (stockValue < 5) {
+                    lowStockProducts.push(row);
+                }
+            }
+        }
+        
+        // Hapus semua baris yang tidak memenuhi kriteria
+        for (let row of rows) {
+            row.style.display = 'none';
+        }
+        
+        // Tampilkan baris yang stoknya rendah
+        for (let productRow of lowStockProducts) {
+            productRow.style.display = '';
+        }
+    }
+
+    // Fungsi untuk mengurutkan data stok menipis
+    function sortLowStock() {
+        const rows = Array.from(dataTable.getElementsByTagName('tbody')[0].getElementsByTagName('tr'));
+        rows.sort((a, b) => {
+            const stockA = parseInt(a.getElementsByTagName('td')[7].innerText.trim());
+            const stockB = parseInt(b.getElementsByTagName('td')[7].innerText.trim());
+            return stockA - stockB;
+        });
+
+        // Hapus semua baris dan tambahkan yang sudah diurutkan
+        const tbody = dataTable.getElementsByTagName('tbody')[0];
+        tbody.innerHTML = '';
+        for (let row of rows) {
+            tbody.appendChild(row);
+        }
+    }
+
+    // Event listeners
+    if (showLowStockButton) {
+        showLowStockButton.addEventListener('click', showLowStock);
+    }
+
+    if (sortLowStockButton) {
+        sortLowStockButton.addEventListener('click', sortLowStock);
+    }
+});
+
+         </script>   
+    
+    <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable();
+            
+            $('.btn-delete-produk').click(function (e) {
+                e.preventDefault();
+                var produkId = $(this).data('id');
+                var produkName = $(this).data('name');
+                $('#deleteProdukModalLabel').text('Konfirmasi Hapus Produk');
+                $('#deleteProdukModal .modal-body').html('Apakah Anda yakin ingin menghapus produk <strong>' + produkName + '</strong>?');
+                $('#deleteProdukModal').modal('show');
+                
+                $('#confirmDeleteProduk').unbind().click(function () {
+                    $.ajax({
+                        url: "{% url 'produk_hapus' 0 %}".replace('0', produkId),
+                        type: 'POST',
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function () {
+                            $('#deleteProdukModal').modal('hide');
+                            location.reload();
+                        },
+                        error: function () {
+                            alert('Terjadi kesalahan saat menghapus produk.');
+                        }
+                    });
+                });
+            });
+        });
+        </script>
+      
+       <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable();
+    
+            // Function to show low stock alert with Bootstrap toast
+            function showLowStockAlert() {
+                let lowStockProducts = [];
+                $('#dataTableHover tbody tr').each(function () {
+                    let stock = parseInt($(this).find('td').eq(7).text().trim()); // Adjust index based on your table
+                    
+                    if (stock < 5) {
+                        let namaProduk = $(this).find('td').eq(2).text().trim(); // Adjust index for Nama Produk
+                        let jenis= $(this).find('td').eq(3).text().trim(); // Adjust index for Jenis Provider
+                        let namaProvider = $(this).find('td').eq(4).text().trim(); // Adjust index for Nama Provider
+                       
+                        
+                        lowStockProducts.push({
+                            
+                            jenis: jenis,
+                            namaProvider: namaProvider,
+                            namaProduk: namaProduk,
+                            stock: stock
+                        });
+                        $(this).addClass('table-warning'); // Highlight the row
+                    }
+                });
+    
+                if (lowStockProducts.length > 0) {
+                    $('#lowStockList').empty(); // Clear existing list
+                    lowStockProducts.forEach(function (product) {
+                        $('#lowStockList').append('<li>' + 
+                       
+                            'Jenis : ' + product.jenis + ', ' +
+                            'Nama Provider: ' + product.namaProvider + ', ' +
+                            'Nama Produk: ' + product.namaProduk + ', ' +
+                            'Sisa Stok: ' + product.stock + 
+                        '</li>');
+                    });
+                    $('#lowStockToast').toast('show'); // Show the toast notification
+                }
+            }
+    
+            // Call the function to highlight low stock products and show alert on page load
+            showLowStockAlert();
+        });
+    </script>
+    
+
+        
+        
+    
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+    // Show form with slide down effect
+    document.querySelectorAll('.btn-show-form').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var produkId = this.getAttribute('data-id');
+            var formContainer = document.getElementById('form-container-' + produkId);
+            formContainer.style.display = 'block'; // Ensure the container is displayed
+            formContainer.classList.add('show');
+        });
+    });
+
+    // Hide form with slide up effect
+    document.querySelectorAll('.btn-cancel-form').forEach(function (button) {
+        button.addEventListener('click', function () {
+            var produkId = this.getAttribute('data-id');
+            var formContainer = document.getElementById('form-container-' + produkId);
+            formContainer.classList.remove('show');
+            setTimeout(function () {
+                formContainer.style.display = 'none'; // Hide the container after animation
+            }, 500); // Match this time with the CSS transition duration
+        });
+    });
+});
+
+</script>
+
+
+
+
+</body>
+</html>

@@ -1,0 +1,47 @@
+<!-- templates/laporan/template_produk.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Produk Report</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h2>Produk Report</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Nama Produk</th>
+                <th>Jenis Provider</th>
+                <th>Harga Modal</th>
+                <th>Harga Jual</th>
+                <th>Jumlah Stok</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for produk in produk_list %}
+            <tr>
+                <td>{{ produk.nama_produk }}</td>
+                <td>{{ produk.jenis_provider }}</td>
+                <td>{{ produk.harga_modal|floatformat:3 }}</td>
+                <td>{{ produk.harga_jual|floatformat:3 }}</td>
+                <td>{{ produk.jumlah_stok }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>

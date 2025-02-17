@@ -1,0 +1,356 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'img/logo/logo_saricell.png' %}" rel="icon">
+    <title>Sari Cell - Jenis </title>
+    <link href="{% static 'vendor2/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor2/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/ruang-admin.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor2/datatables/dataTables.bootstrap4.min.css' %}" rel="stylesheet">
+    
+    <style>
+        .form-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+        }
+
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+    </style>
+</head>
+
+<body id="page-top">
+    <div id="wrapper">
+        <!--Start Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'owner_dashboard' %}">
+          <div class="sidebar-brand-icon">
+            <img src="{% static 'img/logo/logo3.png' %}">
+          </div>
+          <div class="sidebar-brand-text mx-3">Sari Cell</div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'owner_dashboard' %}">
+            <i class="fas fa-fw fa-home icon-home" style="color: gray;"></i>
+  
+            <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Stok & Daftar Produk
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+            aria-expanded="true" aria-controls="collapseBootstrap">
+            <i class="fas fa-fw fa-database" style="color: gray;"></i>
+  
+  
+            <span>Data Master</span>
+          </a>
+          <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Data Master</h6>
+              <a class="collapse-item" href="{% url 'jenis_list' %}">Jenis</a>
+              <a class="collapse-item" href="{% url 'provider_list' %}">Provider atau Merek</a>
+              <a class="collapse-item" href="{% url 'jenisprovider_list' %}">Jenis Provider atau Merek</a>
+              <a class="collapse-item" href="/stok">Produk atau Barang</a>
+              <a class="collapse-item" href="{% url 'pulsa_list' %}">Pulsa</a>
+            </div>
+          </div>
+        </li>
+          <!-- Transaksi -->
+          <hr class="sidebar-divider">
+          <div class="sidebar-heading">
+           Transaksi
+          </div>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+              aria-controls="collapsePage">
+              <i class="fas fa-fw fa-exchange-alt"></i>
+              <span>Transaksi</span>
+            </a>
+            <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Transaksi</h6>
+                      <a class="collapse-item" href="{% url 'transaksi_list' %}">Transaksi Produk</a>
+                      <a class="collapse-item" href="{% url 'transaksi_pulsa_list' %}">Transaksi Pulsa</a>
+              </div>
+            </div>
+          </li>
+              <!-- Transaksi -->
+        <!-- Laporan -->
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Laporan 
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+            aria-controls="collapseForm">
+            <i class="fas fa-fw fa-chart-line"></i>
+            <span>Laporan Stok</span>
+          </a>
+          <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Stok</h6>
+              <a class="collapse-item" href="{% url 'produk_report' %}">Laporan Produk</a>
+              <a class="collapse-item" href="{% url 'pulsa_report' %}">Laporan Pulsa</a>
+            </div>
+          </div>
+        </li>
+          
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
+            aria-controls="collapseTable">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Laporan Transaksi</span>
+          </a>
+          <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Transaksi</h6>
+              <a class="collapse-item" href="{% url 'transaksi_report' %}">Laporan Transaksi Produk</a>
+              <a class="collapse-item" href="{% url 'transaksi_pulsa_report' %}">Laporan Transaksi Pulsa</a>
+            </div>
+          </div>
+        </li>
+        <!-- Laporan -->  
+  
+        <hr class="sidebar-divider">
+        <div class="version" id="version-ruangadmin"></div>
+      </ul>
+      <!-- End Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}"
+                                    style="max-width: 60px">
+                                <span class="ml-2 d-none d-lg-inline text-white small">{{ user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Form -->
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Topbar -->
+
+                <!-- Container Fluid-->
+                <div class="container-fluid" id="container-wrapper">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Data Jenis</h1>
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="{% url 'owner_dashboard' %}">Home</a></li>
+                            <li class="breadcrumb-item">Data Master</li>
+                            <li class="breadcrumb-item active" aria-current="page">Jenis</li>
+                        </ul>
+                    </div>
+                    {% if edit_mode %}
+                    <form id="editJenisForm" method="post" action="{% url 'edit_jenis' edit_id %}">
+                {% else %}
+                    <form id="tambahJenisForm" method="post" action="{% url 'jenis_list' %}">
+                {% endif %}
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="nama_jenis" name="nama_jenis"
+                               value="{% if edit_mode %}{{ form.instance.nama_jenis }}{% endif %}"
+                               placeholder="Tambahkan atau Edit Jenis" required>
+                        <small id="namaJenisError" class="form-error"></small>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        {% if edit_mode %}Edit Jenis{% else %}Tambah Jenis{% endif %}
+                    </button>
+                </form>
+
+                    <!-- Row -->
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="card mb-4 mt-2">
+                                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                    <h6 class="m-0 font-weight-bold text-primary">Tabel Jenis</h6>
+                                </div>
+                                <div class="table-responsive p-3">
+                                    <table class="table align-items-center table-flush table-hover" id="dataTableHover">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Nomor</th>
+                                                <th>ID</th>
+                                                <th>Nama Jenis</th>
+                                                <th>Tanggal Input</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for jenis in jenis_list %}
+                                            <tr>
+                                                <td>{{ forloop.counter }}</td>
+                                                <td>{{ jenis.id }}</td>
+                                                <td>{{ jenis.nama_jenis }}</td>
+                                                <td>{{ jenis.tanggal_input }}</td>
+                                                <td>
+                                                    <a href="{% url 'edit_jenis' jenis.id %}" class="btn btn-success btn-sm"><i class="fas fa-edit"></i></a>
+                                                    <button class="btn btn-sm btn-danger btn-delete-jenis"
+                                                            data-id="{{ jenis.id }}"
+                                                            data-name="{{ jenis.nama_jenis }}">
+                                                            <i class="fas fa-trash"></i>
+                                                        
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            {% empty %}
+                                            <tr>
+                                                <td colspan="5">Belum ada jenis yang ditambahkan.</td>
+                                            </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+          <!-- Modal Konfirmasi Hapus -->
+          <div class="modal fade" id="deleteJenisModal" tabindex="-1" role="dialog" aria-labelledby="deleteJenisModalLabel"
+          aria-hidden="true">
+         <div class="modal-dialog" role="document">
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <h5 class="modal-title" id="deleteJenisModalLabel">Konfirmasi Hapus Jenis</h5>
+                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                         <span aria-hidden="true">&times;</span>
+                     </button>
+                 </div>
+                 <div class="modal-body">
+                     Apakah Anda yakin ingin menghapus jenis ini?
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                     <button type="button" id="confirmDeleteJenis" class="btn btn-danger">Hapus</button>
+                 </div>
+             </div>
+         </div>
+     </div>
+            <!-- Footer -->
+      <footer class="sticky-footer bg-white">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>copyright &copy; <script> document.write(new Date().getFullYear()); </script> - 
+              <b><a href="https://indrijunanda.gitlab.io/" target="_blank">iSari Cell</a></b>
+            </span>
+          </div>
+        </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+  </div>
+
+  <!-- Scroll to top -->
+  <a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+  </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">X</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Bootstrap core JavaScript-->
+    <script src="{% static 'vendor2/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="{% static 'vendor2/jquery-easing/jquery.easing.min.js' %}"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="{% static 'js/ruang-admin.min.js' %}"></script>
+    <!-- Page level plugins -->
+    <script src="{% static 'vendor2/datatables/jquery.dataTables.min.js' %}"></script>
+    <script src="{% static 'vendor2/datatables/dataTables.bootstrap4.min.js' %}"></script>
+    <!-- Page level custom scripts -->
+    <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable(); // ID from dataTable with Hover
+        });
+    </script>
+    <script>
+          $(document).ready(function () {
+            $('#dataTableHover').DataTable();
+            $('.btn-delete-jenis').click(function (e) {
+                e.preventDefault();
+                var jenisId = $(this).data('id');
+                var jenisName = $(this).data('name');
+                $('#deleteJenisModalLabel').text('Konfirmasi Hapus Jenis');
+                $('#deleteJenisModal .modal-body').html('Apakah Anda yakin ingin menghapus jenis <strong>' + jenisName + '</strong>?');
+                $('#deleteJenisModal').modal('show');
+                $('#confirmDeleteJenis').unbind().click(function () {
+                    $.ajax({
+                        url: '/hapus_jenis/' + jenisId + '/',
+                        type: 'POST',
+                        data: {
+                            csrfmiddlewaretoken: '{{ csrf_token }}'
+                        },
+                        success: function () {
+                            window.location.reload();
+                        },
+                        error: function () {
+                            alert('Terjadi kesalahan saat menghapus jenis.');
+                        }
+                    });
+                });
+            });
+        });
+    </script>
+     <script>
+        $(document).ready(function () {
+            $('#dataTableHover').DataTable(); // ID From dataTable with Hover
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,285 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link href="{% static 'img/logo/logo.png' %}" rel="icon">
+    <title>Edit Produk</title>
+    <link href="{% static 'vendor2/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'vendor2/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet" type="text/css">
+    <link href="{% static 'css/ruang-admin.min.css' %}" rel="stylesheet">
+    <link href="{% static 'vendor2/select2/css/select2.min.css' %}" rel="stylesheet" type="text/css">
+    <style>
+        .form-error {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .btn-primary {
+            background-color: #007bff;
+            border-color: #007bff;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+        }
+        .btn-primary:hover {
+            background-color: #0069d9;
+            border-color: #0062cc;
+        }
+        .btn-secondary {
+            background-color: #6c757d;
+            border-color: #6c757d;
+            font-size: 1rem;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+        }
+        .btn-secondary:hover {
+            background-color: #5a6268;
+            border-color: #545b62;
+        }
+        .card-body form {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        .form-group label {
+            font-weight: 600;
+        }
+        .form-group .form-control {
+            border-radius: 0.375rem;
+            padding: 0.75rem;
+        }
+        .custom-select {
+            color: #000; /* Set text color to black */
+            background-color: #fff; /* Set background color to white */
+            border: 1px solid #ced4da; /* Add border to the dropdown */
+        }
+        .custom-select option {
+            color: #000; /* Set text color to black */
+            background-color: #fff; /* Set background color to white */
+        }
+        .select2-container--default .select2-results__option {
+            color: #000; /* Set text color to black */
+            background-color: #fff; /* Set background color to white */
+        }
+        .select2-container--default .select2-results__option--highlighted {
+            background-color: #007bff; /* Highlighted option background */
+            color: #fff; /* Highlighted option text color */
+        }
+    </style>
+</head>
+<body id="page-top">
+    <div id="wrapper">
+        <!--Start Sidebar -->
+    <ul class="navbar-nav sidebar sidebar-light accordion" id="accordionSidebar">
+        <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'owner_dashboard' %}">
+          <div class="sidebar-brand-icon">
+            <img src="{% static 'img/logo/logo3.png' %}">
+          </div>
+          <div class="sidebar-brand-text mx-3">Sari Cell</div>
+        </a>
+        <hr class="sidebar-divider my-0">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'owner_dashboard' %}">
+            <i class="fas fa-fw fa-home icon-home" style="color: gray;"></i>
+  
+            <span>Dashboard</span></a>
+        </li>
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Stok & Daftar Produk
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseBootstrap"
+            aria-expanded="true" aria-controls="collapseBootstrap">
+            <i class="fas fa-fw fa-database" style="color: gray;"></i>
+  
+  
+            <span>Data Master</span>
+          </a>
+          <div id="collapseBootstrap" class="collapse" aria-labelledby="headingBootstrap" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Data Master</h6>
+              <a class="collapse-item" href="{% url 'jenis_list' %}">Jenis</a>
+              <a class="collapse-item" href="{% url 'provider_list' %}">Provider atau Merek</a>
+              <a class="collapse-item" href="{% url 'jenisprovider_list' %}">Jenis Provider atau Merek</a>
+              <a class="collapse-item" href="/stok">Produk atau Barang</a>
+              <a class="collapse-item" href="{% url 'pulsa_list' %}">Pulsa</a>
+            </div>
+          </div>
+        </li>
+          <!-- Transaksi -->
+          <hr class="sidebar-divider">
+          <div class="sidebar-heading">
+           Transaksi
+          </div>
+          <li class="nav-item">
+            <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePage" aria-expanded="true"
+              aria-controls="collapsePage">
+              <i class="fas fa-fw fa-exchange-alt"></i>
+              <span>Transaksi</span>
+            </a>
+            <div id="collapsePage" class="collapse" aria-labelledby="headingPage" data-parent="#accordionSidebar">
+              <div class="bg-white py-2 collapse-inner rounded">
+                <h6 class="collapse-header">Transaksi</h6>
+                      <a class="collapse-item" href="{% url 'transaksi_list' %}">Transaksi Produk</a>
+                      <a class="collapse-item" href="{% url 'transaksi_pulsa_list' %}">Transaksi Pulsa</a>
+              </div>
+            </div>
+          </li>
+              <!-- Transaksi -->
+        <!-- Laporan -->
+        <hr class="sidebar-divider">
+        <div class="sidebar-heading">
+          Laporan 
+        </div>
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseForm" aria-expanded="true"
+            aria-controls="collapseForm">
+            <i class="fas fa-fw fa-chart-line"></i>
+            <span>Laporan Stok</span>
+          </a>
+          <div id="collapseForm" class="collapse" aria-labelledby="headingForm" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Stok</h6>
+              <a class="collapse-item" href="{% url 'produk_report' %}">Laporan Produk</a>
+              <a class="collapse-item" href="{% url 'pulsa_report' %}">Laporan Pulsa</a>
+            </div>
+          </div>
+        </li>
+          
+        <li class="nav-item">
+          <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTable" aria-expanded="true"
+            aria-controls="collapseTable">
+            <i class="fas fa-fw fa-table"></i>
+            <span>Laporan Transaksi</span>
+          </a>
+          <div id="collapseTable" class="collapse" aria-labelledby="headingTable" data-parent="#accordionSidebar">
+            <div class="bg-white py-2 collapse-inner rounded">
+              <h6 class="collapse-header">Laporan Transaksi</h6>
+              <a class="collapse-item" href="{% url 'transaksi_report' %}">Laporan Transaksi Produk</a>
+              <a class="collapse-item" href="{% url 'transaksi_pulsa_report' %}">Laporan Transaksi Pulsa</a>
+            </div>
+          </div>
+        </li>
+        <!-- Laporan -->  
+  
+        <hr class="sidebar-divider">
+        <div class="version" id="version-ruangadmin"></div>
+      </ul>
+      <!-- End Sidebar -->
+
+        <div id="content-wrapper" class="d-flex flex-column">
+            <div id="content">
+                <!-- TopBar -->
+                <nav class="navbar navbar-expand navbar-light bg-navbar topbar mb-4 static-top">
+                    <button id="sidebarToggleTop" class="btn btn-link rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <img class="img-profile rounded-circle" src="{% static 'img/boy.png' %}" style="max-width: 60px">
+                                <span class="ml-2 d-none d-lg-inline text-white small">{{ user.username }}</span>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="{% url 'profile' %}">
+                                    <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profile
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <!-- Logout Form -->
+                                <form action="{% url 'logout' %}" method="post">
+                                    {% csrf_token %}
+                                    <button type="submit" class="dropdown-item">
+                                        <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Logout
+                                    </button>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+                <!-- Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">Edit Produk</h6>
+                        </div>
+                        <div class="card-body">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                {{ form.non_field_errors }}
+                                {% for field in form %}
+                                    <div class="form-group">
+                                        {{ field.label_tag }}
+                                        {{ field }}
+                                        <span class="form-error">{{ field.errors }}</span>
+                                    </div>
+                                {% endfor %}
+                                <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                                <a href="{% url 'stok_list' %}" class="btn btn-secondary">Kembali</a>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.container-fluid -->
+
+                <!-- Footer -->
+                <footer class="footer bg-white">
+                    <div class="container my-auto">
+                        <div class="text-center my-auto">
+                            <span>Powered by <b>Sari Cell</b></span>
+                        </div>
+                    </div>
+                </footer>
+                <!-- Footer -->
+            </div>
+        </div>
+    </div>
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                    <a class="btn btn-primary" href="login.html">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="{% static 'vendor2/jquery/jquery.min.js' %}"></script>
+    <script src="{% static 'vendor2/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor2/jquery-easing/jquery.easing.min.js' %}"></script>
+    <script src="{% static 'js/ruang-admin.min.js' %}"></script>
+    <script src="{% static 'vendor2/select2/js/select2.min.js' %}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>
+</body>
+</html>

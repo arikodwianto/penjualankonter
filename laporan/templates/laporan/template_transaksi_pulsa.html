@@ -1,0 +1,43 @@
+
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Laporan Transaksi Pulsa</h1>
+    <form method="get" action="">
+        <div class="form-row">
+            <div class="form-group col-md-4">
+                <label for="start_date">Tanggal Awal:</label>
+                <input type="date" class="form-control" id="start_date" name="start_date" value="{{ request.GET.start_date }}">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="end_date">Tanggal Akhir:</label>
+                <input type="date" class="form-control" id="end_date" name="end_date" value="{{ request.GET.end_date }}">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Tampilkan</button>
+    </form>
+    <a href="{% url 'export_transaksi_pulsa_to_excel' %}">Export Laporan Transaksi Pulsa ke Excel</a>
+    <div class="table-container mt-4">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Pulsa</th>
+                    <th>Nomor HP</th>
+                    <th>Jumlah</th>
+                    <th>Tanggal</th>
+                    <th>Margin</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for transaksi in transactions %}
+                <tr>
+                    <td>{{ transaksi.pulsa.nama }}</td>
+                    <td>{{ transaksi.nomor_hp }}</td>
+                    <td>{{ transaksi.jumlah }}</td>
+                    <td>{{ transaksi.tanggal }}</td>
+                    <td>{{ transaksi.hitung_margin }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <p>Total Margin: {{ total_margin }}</p>
+    </div>
+</div>

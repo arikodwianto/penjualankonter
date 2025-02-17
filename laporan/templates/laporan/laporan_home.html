@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan</title>
+</head>
+<body>
+    <h1>Selamat Datang di Halaman Laporan</h1>
+    <a href="{% url 'produk_report' %}">Laporan Produk</a>
+    <br>
+    <a href="{% url 'pulsa_report' %}">Laporan Pulsa</a>
+    <br>
+    <a href="{% url 'transaksi_report' %}">Laporan Transaksi</a>
+    <br>
+    <a href="{% url 'transaksi_pulsa_report' %}">Laporan Transaksi Pulsa</a>
+    <br>
+    <a href="{% url 'export_produk_to_excel' %}">Export Laporan Produk ke Excel</a>
+    <br>
+    <a href="{% url 'export_pulsa_to_excel' %}">Export Laporan Pulsa ke Excel</a>
+    <br>
+    <a href="{% url 'export_transaksi_to_excel' %}">Export Laporan Transaksi ke Excel</a>
+    <br>
+    <a href="{% url 'export_transaksi_pulsa_to_excel' %}">Export Laporan Transaksi Pulsa ke Excel</a>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<div class="table-container mt-4">
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>ID</th>
+                <th>Produk</th>
+                <th>Jenis</th>
+                <th>Provider</th>
+                <th>Jumlah</th>
+                <th>Harga Modal</th>
+                <th>Harga Jual</th>
+                <th>Margin</th>
+                <th>Tanggal</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaksi in transactions %}
+            <tr>
+                <td>{{ forloop.counter }}</td>
+                <td>{{ transaksi.id }}</td>
+                <td>{{ transaksi.produk.nama_produk }}</td>
+                <td>{{ transaksi.produk.jenis_provider.jenis.nama_jenis }}</td>
+                <td>{{ transaksi.produk.jenis_provider.provider.nama_provider }}</td>
+                <td>{{ transaksi.jumlah }}</td>
+                <td>Rp {{ transaksi.produk.harga_modal|floatformat:"3" }}</td>
+                <td>Rp {{ transaksi.produk.harga_jual|floatformat:"3" }}</td>
+                <td>{{ transaksi.hitung_margin }}</td>
+                <td>{{ transaksi.tanggal }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <p>Total Margin: {{ total_margin }}</p>
+</div>
+</div>

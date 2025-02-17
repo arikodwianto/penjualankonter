@@ -1,0 +1,44 @@
+<!-- Edit Modal -->
+<div class="modal fade" id="editJenisProviderModal{{ jenisprovider.id }}"
+    tabindex="-1" role="dialog"
+    aria-labelledby="editJenisProviderModalLabel{{ jenisprovider.id }}"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editJenisProviderModalLabel{{ jenisprovider.id }}">Edit Jenis Provider</h5>
+                <button type="button" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'edit_jenisprovider' jenisprovider.id %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="id_jenis">Jenis:</label>
+                        <select id="id_jenis" name="jenis" class="form-control">
+                            {% for jenis in jenis_list %}
+                            <option value="{{ jenis.id }}" {% if jenis.id == jenisprovider.jenis.id %}selected{% endif %}>
+                                {{ jenis.nama_jenis }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="id_provider">Provider:</label>
+                        <select id="id_provider" name="provider" class="form-control">
+                            {% for provider in provider_list %}
+                            <option value="{{ provider.id }}" {% if provider.id == jenisprovider.provider.id %}selected{% endif %}>
+                                {{ provider.nama_provider }}
+                            </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End of Edit Modal -->

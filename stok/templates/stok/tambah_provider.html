@@ -1,0 +1,19 @@
+<!-- stok/templates/stok/tambah_provider.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Tambah Provider</title>
+</head>
+<body>
+    <h1>Tambah Provider</h1>
+    <form method="post">
+        {% csrf_token %}
+        <label for="nama_provider">Nama Provider:</label>
+        <input type="text" id="nama_provider" name="nama_provider">
+        <br><br>
+        <button type="submit">Tambah Provider</button>
+    </form>
+</body>
+</html>

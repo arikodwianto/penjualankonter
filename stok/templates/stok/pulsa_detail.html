@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detail Pulsa</title>
+</head>
+<body>
+    <h1>{{ pulsa }}</h1>
+    <p>Saldo: {{ pulsa.saldo }}</p>
+    <p>Tanggal Input: {{ pulsa.tanggal_input }}</p>
+    <a href="{% url 'stok:pulsa_edit' pulsa.pk %}">Edit</a>
+    <a href="{% url 'stok:pulsa_delete' pulsa.pk %}">Delete</a>
+    <a href="{% url 'stok:pulsa_list' %}">Kembali ke Daftar</a>
+</body>
+</html>
