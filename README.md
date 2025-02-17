@@ -1,0 +1,2 @@
+# penjualankonter
+adminkonter
